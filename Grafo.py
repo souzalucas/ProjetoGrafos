@@ -6,21 +6,36 @@ class Vertex:
         self.__edgesIn = []
         self.__edgesOut = []
         self.__name = name
-        self.__distance = math.inf
+        self.__distance = - math.inf
         self.__color = ''
         self.__father = None
     
     def getName(self):
         return self.__name
 
-    def getEdge(self):
+    def getEdgeOut(self):
         return self.__edgesOut
     
+    def getEdgeIn(self):
+        return self.__edgesIn
+    
+    def getEdge(self):
+        edge = self.__edgesOut + self.__edgesIn
+        return edge
+
     def removeEdge(self, name):
         index = 0
         for edge in self.__edgesOut:
             if name == edge.getName():
+                edge.removeEdgeIn(self)
                 del(self.__edgesOut[index])
+            index+=1
+
+    def removeEdgeIn(self, edgeIn):
+        index = 0
+        for edge in self.__edgesIn:
+            if edgeIn == edge:
+                del(self.__edgesIn[index])
             index+=1
 
     def printVertexName(self):
@@ -33,14 +48,10 @@ class Vertex:
 
         print(" --> NULL")
 
-    def existEdge(self, name):
-        count = 0
-        for edge in self.__edgesOut:
-            if edge.getName() == name:
-                count+=1
-        return count
+    def getOrdemIn(self):
+        return len(self.__edgesIn)
 
-    def getOrdemEdge(self):
+    def getOrdemOut(self):
         return len(self.__edgesOut)
 
     def setColor(self, color):
@@ -62,9 +73,9 @@ class Vertex:
 # --------------------------------------------------------------------------------------            
 class Grafo:
     
-    def __init__(self):
+    def __init__(self, digrafo):
         self.__vertex = []
-        self.__digrafo = True
+        self.__digrafo = digrafo
         self.__q = []
 
     def addVertex(self, name):
@@ -89,7 +100,8 @@ class Grafo:
         if vEnd == None:
             return None
 
-        vInit.getEdge().append(vEnd)
+        vInit.getEdgeOut().append(vEnd)
+        vEnd.getEdgeIn().append(vInit)
         return 1
 
     def printAll(self):
@@ -118,15 +130,14 @@ class Grafo:
         ordem = 0
         for vertex in self.__vertex:
             if vert == vertex.getName():
-               ordem += vertex.getOrdemEdge()
-            else: 
-                ordem += vertex.existEdge(vert)
+                ordem += vertex.getOrdemOut()
+                ordem += vertex.getOrdemIn()
         return ordem
 
     def widthSearch(self, vertex):
         for v in self.__vertex:
             v.setColor('branco')
-            v.setDistance(math.inf)
+            v.setDistance(- math.inf)
             v.setFather(None)
         vertex.setColor('cinza')
         vertex.setDistance(0)
@@ -143,32 +154,18 @@ class Grafo:
                     self.__q.append(ver)
             used.setColor('preto')
 
-
-
+    def getMinMaxDistance(self):
+        minMax = math.inf
+        vertMinMax = None
+        for v in self.__vertex:
+            self.widthSearch(v)
+            maxDistance = - math.inf
+            for ver in self.__vertex:
+                dist = ver.getDistance()
+                if dist > maxDistance:
+                    maxDistance = dist
+            if maxDistance < minMax:
+                minMax = maxDistance
+                vertMinMax = v
+        return vertMinMax.getName()
 # --------------------------------------------------------------------------------------
-
-# gg = Grafo()
-
-# gg.addVertex("1")
-# gg.addVertex("2")
-# gg.addVertex("3")
-# gg.addVertex("4")
-# gg.addVertex("5")
-
-# gg.addEdge("1", "2")
-# gg.addEdge("1", "3")
-# gg.addEdge("3", "2")
-# gg.addEdge("1", "2")
-# gg.addEdge("2", "4")
-# gg.addEdge("4", "2")
-# gg.addEdge("3", "5")
-
-# print("------------------------------------------")
-# gg.printAll()
-
-# # gg.removeVertex("2")
-# print(gg.getOrdem("1"))
-# print("------------------------------------------")
-# gg.printAll()
-
-# print("------------------------------------------")
