@@ -136,10 +136,10 @@ class Grafo:
 
     def widthSearch(self, vertex):
         for v in self.__vertex:
-            v.setColor('branco')
+            v.setColor('white')
             v.setDistance(- math.inf)
             v.setFather(None)
-        vertex.setColor('cinza')
+        vertex.setColor('grey')
         vertex.setDistance(0)
         vertex.setFather(None)
         self.__q.append(vertex)
@@ -147,12 +147,12 @@ class Grafo:
         while len(self.__q) != 0:
             used = self.__q.pop()
             for ver in used.getEdge():
-                if ver.getColor() == 'branco':
-                    ver.setColor('cinza')
+                if ver.getColor() == 'white':
+                    ver.setColor('grey')
                     ver.setDistance(used.getDistance()+1)
                     ver.setFather(used)
                     self.__q.append(ver)
-            used.setColor('preto')
+            used.setColor('black')
 
     def getMinMaxDistance(self):
         minMax = math.inf
@@ -168,4 +168,13 @@ class Grafo:
                 minMax = maxDistance
                 vertMinMax = v
         return vertMinMax.getName()
+
+    def isConnected(self):
+        v = self.__vertex[0]
+        self.widthSearch(v)
+        for vert in self.__vertex:
+            if (vert.getColor() != 'black'):
+                return False
+        return True
+
 # --------------------------------------------------------------------------------------
