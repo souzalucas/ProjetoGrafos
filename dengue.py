@@ -1,60 +1,30 @@
 import Grafo
 
+import sys
 
-# grafo = Grafo.Grafo()
+text = open(sys.argv[1], 'r')
 
+lines = text.read().split('\n')
+vertex = []
+vQtd = int(lines[0])
 
+index = 1
+teste = 1
+while vQtd != 0:
+  gg = Grafo.Grafo(True)
+  #print(vQtd)
+  for i in range(vQtd - 1):
+    gg.addVertex(lines[index].split(' ')[0])
+    gg.addVertex(lines[index].split(' ')[1])
+    gg.addEdge(lines[index].split(' ')[0], lines[index].split(' ')[1])
+    index += 1
+  
+  if vQtd == 1:
+    index += 1
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-gg = Grafo.Grafo(True)
-
-gg.addVertex("1")
-gg.addVertex("2")
-gg.addVertex("3")
-gg.addVertex("4")
-gg.addVertex("5")
-gg.addVertex("6")
-gg.addVertex("7")
-
-gg.addEdge("1", "3")
-gg.addEdge("2", "3")
-gg.addEdge("3", "4")
-gg.addEdge("4", "5")
-gg.addEdge("5", "6")
-gg.addEdge("5", "7")
-
-print("------------------------------------------")
-gg.printAll()
-
-print("------------------------------------------")
-
-print(gg.getMinMaxDistance())
-print("------------------------------------------")
+  print('Teste', teste)
+  vert = 1 if (vQtd == 1) else gg.getMinMaxDistance()
+  print(vert, '\n')
+  vQtd = int(lines[index])
+  index += 1
+  teste += 1

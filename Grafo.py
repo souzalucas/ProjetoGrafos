@@ -79,7 +79,8 @@ class Grafo:
         self.__q = []
 
     def addVertex(self, name):
-        self.__vertex.append(Vertex(name))
+        if self.getVertex(name) == None:
+            self.__vertex.append(Vertex(name))
     
 
     def getVertex(self, name):
