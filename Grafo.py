@@ -48,10 +48,10 @@ class Vertex:
 
         print(" --> NULL")
 
-    def getOrdemIn(self):
+    def getGrauIn(self):
         return len(self.__edgesIn)
 
-    def getOrdemOut(self):
+    def getGrauOut(self):
         return len(self.__edgesOut)
 
     def setColor(self, color):
@@ -89,6 +89,21 @@ class Grafo:
                 return vertex
         return None
 
+    def getNos(self):
+        return self.__vertex
+
+    def getOrdem(self):
+        return len(self.__vertex)
+
+    def getAdjacentes(self, vertex):
+        listAdj = []
+        for v in self.__vertex:
+            if (v.getName() == vertex):
+                listAdj = v.getEdgeIn() + v.getEdgeOut()
+        returnList = []
+        for lista in listAdj:
+            returnList.append(lista.getName())
+        return returnList
 
     def addEdge(self, vertInit, vertEnd):
         vInit = self.getVertex(vertInit)
@@ -127,13 +142,13 @@ class Grafo:
             if vertIni == vertex.getName():
                 vertex.removeEdge(vertEnd)
     
-    def getOrdem(self, vert):
-        ordem = 0
+    def getGrau(self, vert):
+        grau = 0
         for vertex in self.__vertex:
             if vert == vertex.getName():
-                ordem += vertex.getOrdemOut()
-                ordem += vertex.getOrdemIn()
-        return ordem
+                grau += vertex.getGrauOut()
+                grau += vertex.getGrauIn()
+        return grau
 
     def widthSearch(self, vertex):
         for v in self.__vertex:
@@ -177,5 +192,50 @@ class Grafo:
             if (vert.getColor() != 'black'):
                 return False
         return True
+    
+    def isCompleted(self):
+       
+        for v in self.__vertex:
+            error = 1
+            for comp in self.__vertex:
+                for vertOut in v.getEdgeOut():
+                    if (comp.getName() == vertOut.getName()):
+                        error = 0
+                    if (v.getName() == comp.getName())
+                        error = 0
+            if (error == 1)
+                return False
+        return True
+ 
 
 # --------------------------------------------------------------------------------------
+gg = Grafo(True)
+
+gg.addVertex("1")
+gg.addVertex("2")
+gg.addVertex("3")
+gg.addVertex("4")
+gg.addVertex("5")
+gg.addVertex("6")
+gg.addVertex("7")
+gg.addVertex("8")
+
+gg.addEdge("1", "2")
+gg.addEdge("2", "3")
+gg.addEdge("3", "4")
+gg.addEdge("4", "5")
+gg.addEdge("4", "6")
+gg.addEdge("7", "1")
+gg.addEdge("8", "1")
+
+print(gg.isCompleted())
+
+print("------------------------------------------")
+gg.printAll()
+
+# # gg.removeVertex("2")
+# print(gg.getGrau("1"))
+# print("------------------------------------------")
+# gg.printAll()
+
+# print("------------------------------------------")
