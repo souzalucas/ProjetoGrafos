@@ -15,10 +15,12 @@ for pers in data:
 # print("--------------------------Antes--------------------------")
 # gg.printAll()
 # print("--------------------------Antes--------------------------")
-
-for vertexOut in gg.getVertexList():
-  for vertexIn in gg.getVertexList():
-    gg.addEdge(vertexOut.getName(), vertexIn.getName())
+vertex = gg.getVertexList()
+for i in range(len(vertex)):
+  j = i+1
+  while (j < len(vertex)):
+    gg.addEdge(vertex[i].getName(), vertex[j].getName())
+    j += 1
 
 
 for challenger in gg.getVertexList():
@@ -44,6 +46,7 @@ for challenger in gg.getVertexList():
         challengedHealth -= (challengerAttack - challengedBaseArmor) * challengerAttackRate
         if (challengedHealth <= 0):
           challenger.win()
+          challenger.appendWinsVet(challenged)
           break
 
 
@@ -51,6 +54,7 @@ for challenger in gg.getVertexList():
         challengerHealth -= (challengedAttack - challengerBaseArmor) * challengedAttackRate
         if(challengerHealth <= 0):
           challenged.win()
+          challenged.appendWinsVet(challenger)
           break
         
         if(challengerHealthRegen != None):
@@ -58,15 +62,18 @@ for challenger in gg.getVertexList():
         if(challengedHealthRegen != None):
           challengedHealth += challengedHealthRegen
 
-      print("acabou uma batalha!")
+      # print("acabou uma batalha!")
 
 vetWiner = []
 for player in gg.getVertexList():
-  vetWiner.append([player.getName(), player.getWin()])
+  vetWiner.append([player, player.getName(), player.getWin()])
   # print(player.getName(), end = " | ")
   # print(player.getWin())
 
-vetWiner.sort(key = lambda x : x[1], reverse = True)
+vetWiner.sort(key = lambda x : x[2], reverse = True)
 
-print(vetWiner)
+for i in range(len(vetWiner)):
+  print(vetWiner[i][1], end = "\t| ")
+  print(vetWiner[i][0].getWinsVet())
+# print(vetWiner)
 

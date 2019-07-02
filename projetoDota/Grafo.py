@@ -15,12 +15,22 @@ class Vertex:
         self.__color = ''
         self.__father = None
         self.__wins = 0
+        self.__winsVet = []
+
+    def __repr__(self):
+        return self.__name
+
+    def __str__(self):
+        return self.__name
     
     def getName(self):
         return self.__name
 
     def getWin(self):
         return self.__wins
+    
+    def getWinsVet(self):
+        return self.__winsVet
 
     def getHealth(self):
         return self.__health
@@ -50,6 +60,9 @@ class Vertex:
     def win(self):
         self.__wins += 1
 
+    def appendWinsVet(self, vertex):
+        self.__winsVet.append(vertex)
+        
     def removeEdge(self, name):
         index = 0
         for edge in self.__edgesOut:
